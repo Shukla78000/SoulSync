@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Horoscope</title>
+    <link rel="stylesheet" href="soul_pages.css"> <!-- Retaining your existing background -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        h1 {
+            font-size: 2em;
+            text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            transition: 0.3s ease-in-out;
+        }
+
+        .container:hover {
+            transform: scale(1.05);
+        }
+
+        select, button {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        select {
+            background: #fff;
+            color: #000;
+        }
+
+        button {
+            background: #ffcc00;
+            color: #222;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            box-shadow: 0 0 8px rgba(255, 204, 0, 0.8);
+        }
+
+        button:hover {
+            background: #ff9900;
+            box-shadow: 0 0 15px rgba(255, 204, 0, 1);
+        }
+
+        #horoscope-output {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            font-size: 18px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🌟 Your Daily Horoscope 🌟</h1>
+
+    <div class="container">
+        <label for="zodiac-sign">Select Your Zodiac Sign:</label>
+        <select id="zodiac-sign">
+            <option value="aries">Aries ♈</option>
+            <option value="taurus">Taurus ♉</option>
+            <option value="gemini">Gemini ♊</option>
+            <option value="cancer">Cancer ♋</option>
+            <option value="leo">Leo ♌</option>
+            <option value="virgo">Virgo ♍</option>
+            <option value="libra">Libra ♎</option>
+            <option value="scorpio">Scorpio ♏</option>
+            <option value="sagittarius">Sagittarius ♐</option>
+            <option value="capricorn">Capricorn ♑</option>
+            <option value="aquarius">Aquarius ♒</option>
+            <option value="pisces">Pisces ♓</option>
+        </select>
+
+        <button onclick="checkHoroscope()">Check Horoscope</button>
+
+        <div id="horoscope-output"></div>
+    </div>
+
+    <script>
+        const horoscopes = {
+            aries: {
+                today: "You will be full of energy today! A great time to start new projects.",
+                good: "Excellent day for career growth.",
+                bad: "Avoid arguments with loved ones.",
+                color: "Red 🔴"
+            },
+            taurus: {
+                today: "Patience will be your best friend today. Stay calm in tense situations.",
+                good: "Great financial stability incoming.",
+                bad: "Health might need attention.",
+                color: "Green 🟢"
+            },
+            gemini: {
+                today: "Your social charm will win people over today! Express yourself freely.",
+                good: "Excellent communication skills will benefit you.",
+                bad: "Watch out for minor misunderstandings.",
+                color: "Yellow 🟡"
+            },
+            cancer: {
+                today: "Emotions run high today. Trust your intuition and avoid overthinking.",
+                good: "A great time for self-care and reflection.",
+                bad: "Avoid stressful situations.",
+                color: "White ⚪"
+            },
+            leo: {
+                today: "A strong sense of leadership will help you shine today!",
+                good: "Perfect time for career advancements.",
+                bad: "Stay away from unnecessary drama.",
+                color: "Gold 🏅"
+            },
+            virgo: {
+                today: "An analytical mind will help you make wise decisions today.",
+                good: "A productive day with attention to detail.",
+                bad: "Avoid unnecessary criticism of others.",
+                color: "Brown 🟤"
+            },
+            libra: {
+                today: "Balance is the key to your happiness today. Stay diplomatic.",
+                good: "Your charm will help resolve conflicts.",
+                bad: "Avoid making impulsive financial decisions.",
+                color: "Pink 🎀"
+            },
+            scorpio: {
+                today: "Passion will drive you forward today, but control your emotions.",
+                good: "A day filled with deep conversations and realizations.",
+                bad: "Avoid secrecy in relationships.",
+                color: "Black ⚫"
+            },
+            sagittarius: {
+                today: "Adventure awaits! Take risks and step out of your comfort zone.",
+                good: "A great time for learning and travel.",
+                bad: "Don't let overconfidence lead to mistakes.",
+                color: "Purple 🟣"
+            },
+            capricorn: {
+                today: "Hard work will pay off today! Stay consistent and focused.",
+                good: "Excellent progress in long-term projects.",
+                bad: "Avoid being too rigid in your ways.",
+                color: "Dark Blue 🔵"
+            },
+            aquarius: {
+                today: "Your creative ideas will inspire others today! Think outside the box.",
+                good: "A wonderful day for innovation and socializing.",
+                bad: "Watch out for distractions.",
+                color: "Sky Blue 🌌"
+            },
+            pisces: {
+                today: "Your imagination is at its peak today. Channel it into something productive.",
+                good: "Great opportunities for creative pursuits.",
+                bad: "Emotional sensitivity may cause mood swings.",
+                color: "Sea Green 🟢"
+            }
+        };
+
+        function checkHoroscope() {
+            let sign = document.getElementById("zodiac-sign").value;
+            let output = document.getElementById("horoscope-output");
+
+            let data = horoscopes[sign];
+            output.innerHTML = `
+                <h3>✨ Horoscope for ${sign.charAt(0).toUpperCase() + sign.slice(1)} ✨</h3>
+                <p><strong>Today:</strong> ${data.today}</p>
+                <p><strong>🔆 Good:</strong> ${data.good}</p>
+                <p><strong>⚠️ Bad:</strong> ${data.bad}</p>
+                <p><strong>🎨 Lucky Color:</strong> ${data.color}</p>
+            `;
+
+            output.style.opacity = "0";
+            setTimeout(() => {
+                output.style.opacity = "1";
+            }, 100);
+        }
+    </script>
+
+</body>
+</html>

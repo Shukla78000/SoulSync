@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Numerology - Soul Sync</title>
+  <link rel="stylesheet" href="soul_pages.css"/>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    .header {
+      background: white;
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .logo {
+      font-weight: bold;
+      font-size: 24px;
+      color: #ff5722;
+    }
+    .navbar a {
+      margin: 0 15px;
+      color: #333;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+    }
+    .navbar a:hover {
+      color: #ff5722;
+    }
+    .center-wrapper {
+      position: relative;
+      max-width: 900px;
+      margin: 60px auto;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    }
+    .gradient-bg {
+  background: linear-gradient(135deg, #ffecd2, #fcb69f);
+  animation: bgShift 20s ease infinite;
+  padding: 60px 30px;
+  position: relative;
+  z-index: 1;
+  border-radius: 20px;
+}
+
+@keyframes bgShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+    #particles-js {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      top: 0;
+      left: 0;
+    }
+    .numerology-container {
+      position: relative;
+      z-index: 2;
+      color: rgb(226, 47, 47);
+      text-align: center;
+    }
+    input[type="date"] {
+      width: 100%;
+      padding: 12px 20px;
+      border-radius: 10px;
+      border: none;
+      margin-top: 20px;
+      font-size: 16px;
+    }
+    button {
+      margin: 30px auto 10px;
+      padding: 12px 30px;
+      font-size: 16px;
+      font-weight: bold;
+      background-color: #f9f5f3;
+      color: #000;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #ff9800;
+    }
+    .result-box {
+      margin-top: 30px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+    }
+    .result-box p {
+      font-size: 18px;
+      text-align: center;
+      color: white;
+    }
+    .matrix {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .matrix div {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 15px;
+      border-radius: 12px;
+      font-weight: 600;
+      text-align: center;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">SOUL SYNC</div>
+    <nav class="navbar">
+      <a href="free_kundli.html">FREE KUNDLI</a>
+      <a href="kundli_matching.html">KUNDLI MATCHING</a>
+      <a href="horoscope.html">HOROSCOPES</a>
+      <a href="numerology.html">NUMEROLOGY</a>
+    </nav>
+  </header>
+
+  <div class="center-wrapper">
+    <div class="gradient-bg">
+      <div id="particles-js"></div>
+      <div class="numerology-container">
+        <h2>Numerology Analysis</h2>
+        <p>Enter your Date of Birth to explore your life path and number vibrations.</p>
+
+        <input type="date" id="dob" />
+        <button onclick="generateNumerology()">Generate Report</button>
+
+        <div class="result-box" id="numerologyDetails" style="display:none;">
+          <h3>Your Numerology Details</h3>
+          <p id="numerologyResult"></p>
+          <p id="numerologyDescription" style="margin-top: 15px;"></p>
+        </div>
+
+        <div class="result-box" id="numerologyMatrix" style="display:none;">
+          <h3>Numerology Matrix</h3>
+          <div class="matrix" id="numMatrix"></div>
+        </div>
+
+        <div class="result-box" id="kundliMatrix" style="display:none;">
+          <h3>Generated Kundli Matrix</h3>
+          <div class="matrix" id="kundliMatrixBox"></div>
+        </div>
+
+        <div class="result-box" id="comparisonBox" style="display:none;">
+          <h3>Matrix Comparison</h3>
+          <p>Your core numbers in Numerology and Kundli Matrix reveal alignment in energy patterns and destiny.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const descriptions = {
+      1: "Life Path 1: You are a natural-born leader, ambitious and determined to forge your own path. Independence and self-motivation are your driving forces. You have a strong desire to succeed and are willing to take risks to reach your goals. Your originality and confidence inspire others. However, be mindful of arrogance and impatience. Balance assertiveness with empathy.\n\nKeywords: Leadership, Independence, Initiative, Determination, Innovation.",
+      2: "Life Path 2: You are a peacemaker and a nurturer. Harmony, cooperation, and sensitivity define you. You’re deeply intuitive, diplomatic, and prefer teamwork over competition. You have the ability to bring people together and resolve conflicts. Avoid being overly passive or dependent on others. Embrace your inner strength and emotional intelligence.\n\nKeywords: Cooperation, Sensitivity, Balance, Diplomacy, Partnership.",
+      3: "Life Path 3: Creativity and self-expression are at the heart of your journey. You are joyful, optimistic, and gifted in communication, whether through words, art, or performance. People are drawn to your charisma. Your challenge is to stay grounded and focused. Don’t let scattered energy or self-doubt limit your potential.\n\nKeywords: Creativity, Expression, Joy, Communication, Charm.",
+      4: "Life Path 4: You are the builder. Reliable, hardworking, and practical, you value structure and discipline. You create strong foundations, whether in work, relationships, or values. Others rely on your consistency. Watch out for stubbornness and fear of change. Remember to allow spontaneity in your structured world.\n\nKeywords: Stability, Discipline, Dependability, Order, Loyalty.",
+      5: "Life Path 5: You are a free spirit, drawn to experiences that are exciting, new, and ever-changing. People with this number thrive on adventure, discovery, and personal freedom. You’re curious, adaptable, and quick-witted, making you a natural explorer—whether it’s through travel, learning, or meeting new people.\n\nWhile your energy and enthusiasm are contagious, the challenge for a 5 is to remain focused and grounded. You may find yourself jumping from one passion to another, seeking stimulation without deeper commitment. But when you channel your adventurous spirit into meaningful pursuits, you become a powerful force of inspiration and change.\n\nKeywords: Freedom, Adventure, Curiosity, Adaptability, Communication, Change.",
+      6: "Life Path 6: You are the nurturer, deeply connected to home, family, and responsibility. Compassionate and caring, you seek to protect and uplift others. You often find yourself in roles of caregiver, teacher, or healer. You are guided by a strong sense of justice and morality. Avoid becoming overly controlling or self-sacrificing.\n\nKeywords: Responsibility, Caregiving, Harmony, Service, Protection.",
+      7: "Life Path 7: You are a thinker and seeker of truth. Intellectual and introspective, you search for deeper meaning in life through study, analysis, and spirituality. You are highly intuitive, with a natural affinity for research and the metaphysical. Don’t isolate yourself or become too skeptical—share your wisdom with the world.\n\nKeywords: Wisdom, Spirituality, Introspection, Analysis, Mystery.",
+      8: "Life Path 8: You are driven by power, success, and material mastery. Strong, ambitious, and authoritative, you are built to lead and manage. You possess strong business acumen and aim for financial and personal achievement. Your lesson is to balance ambition with compassion and avoid becoming overly controlling or materialistic.\n\nKeywords: Power, Success, Abundance, Authority, Ambition.",
+      9: "Life Path 9: You are the humanitarian. Empathetic, generous, and emotionally wise, you are here to serve others and make the world a better place. You are artistic, global-minded, and idealistic. You may face emotional highs and lows, but your compassion makes you a beacon of hope. Let go of resentment and embrace forgiveness.\n\nKeywords: Compassion, Humanity, Altruism, Creativity, Wisdom.",
+      11: "Life Path 11: You are an old soul and spiritual messenger. As a master number, 11 carries intuitive and visionary energy. You are highly sensitive, insightful, and often feel a calling to uplift others spiritually or artistically. Balancing your intense inner world with practical reality is your challenge. You have the potential to inspire and awaken others.\n\nKeywords: Intuition, Inspiration, Spirituality, Illumination, Sensitivity.",
+      22: "Life Path 22: Known as the Master Builder, you possess the idealism of Life Path 11 combined with the practical skills of a 4. You have the potential to achieve great things on a large scale—turning dreams into reality. Your challenge is to harness your ambition and apply your power constructively, without being overwhelmed by pressure.\n\nKeywords: Mastery, Vision, Foundation, Manifestation, Leadership.",
+      33: "Life Path 33: The Master Teacher, you are here to uplift humanity through love, compassion, and spiritual wisdom. A blend of the nurturing 6 and the illumination of 11, you are selfless and dedicated to healing. You’re naturally drawn to helping others evolve emotionally and spiritually. Your path requires patience, humility, and emotional strength.\n\nKeywords: Compassion, Healing, Altruism, Teaching, Devotion."
+    };
+
+
+    function generateNumerology() {
+      const dob = document.getElementById("dob").value;
+      if (!dob) {
+        alert("Please enter your date of birth.");
+        return;
+      }
+
+      const birthDate = new Date(dob);
+      const sumDigits = str => str.toString().split("").reduce((a, b) => +a + +b, 0);
+
+      let day = birthDate.getDate();
+      let month = birthDate.getMonth() + 1;
+      let year = birthDate.getFullYear();
+
+      let lifePath = sumDigits(day) + sumDigits(month) + sumDigits(year);
+      while (lifePath > 9 && ![11, 22, 33].includes(lifePath)) {
+        lifePath = sumDigits(lifePath);
+      }
+
+      document.getElementById("numerologyResult").textContent = `Your Life Path Number is: ${lifePath}`;
+      document.getElementById("numerologyDescription").textContent = descriptions[lifePath] || "A unique and rare number.";
+      document.getElementById("numerologyDetails").style.display = "block";
+
+      const matrixData = Array.from({ length: 9 }, (_, i) => i + 1);
+      document.getElementById("numMatrix").innerHTML = matrixData.map(num => `<div>${num}</div>`).join('');
+      document.getElementById("numerologyMatrix").style.display = "block";
+
+      const kundliMatrixData = Array.from({ length: 9 }, () => Math.floor(Math.random() * 12) + 1);
+      document.getElementById("kundliMatrixBox").innerHTML = kundliMatrixData.map(num => `<div>${num}</div>`).join('');
+      document.getElementById("kundliMatrix").style.display = "block";
+
+      document.getElementById("comparisonBox").style.display = "block";
+    }
+  </script>
+
+  <!-- particles.js -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script>
+    particlesJS("particles-js", {
+      particles: {
+        number: { value: 50 },
+        color: { value: "#ffffff" },
+        shape: { type: "circle" },
+        opacity: { value: 0.5 },
+        size: { value: 3 },
+        line_linked: {
+          enable: true,
+          distance: 150,
+          color: "#ffffff",
+          opacity: 0.4,
+          width: 1
+        },
+        move: { enable: true, speed: 3 }
+      },
+      interactivity: {
+        events: { onhover: { enable: true, mode: "grab" } }
+      }
+    });
+  </script>
+</body>
+</html>

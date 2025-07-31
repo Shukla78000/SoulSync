@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Soul Sync - Kundli & Horoscope</title>
+  <link rel="stylesheet" href="soul_index.css" />
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="header">
+    <div class="logo">Soul Sync</div>
+    <nav class="navbar">
+      <a href="free_kundli.html">Free Kundli</a>
+      <a href="kundli_matching.html">Kundli Matching</a>
+      <a href="horoscopes.html">Horoscopes</a>
+      <a href="numerology.html">Numerology</a>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <canvas id="bg-animation"></canvas>
+    <div class="hero-content">
+      <h1>Soul Sync</h1>
+      <p>Simplify your spiritual journey</p>
+      <a href="chat.html" class="chat-button">Chat Now</a>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="services">
+    <div class="service-card">
+      <a href="chat.html">
+        <img src="https://cdni.iconscout.com/illustration/premium/thumb/male-pandit-working-on-laptop-illustration-download-in-svg-png-gif-file-formats--indian-pack-people-illustrations-2319301.png" alt="Chat with Astrologer"/>
+        <p>Chat with Astrologer</p>
+      </a>
+    </div>
+    <div class="service-card">
+      <a href="soul_talk.html">
+        <img src="https://cdni.iconscout.com/illustration/premium/thumb/male-pandit-talking-on-phone-illustration-download-in-svg-png-gif-file-formats--indian-mobile-pack-people-illustrations-2319305.png?f=webp" alt="Talk to Astrologer"/>
+        <p>Talk to Astrologer</p>
+      </a>
+    </div>
+    <div class="service-card">
+      <a href="free_kundli.html">
+        <img src="https://images.yourstory.com/cs/2/f49f80307d7911eaa66f3b309d9a28f5/AppFridayAstroTalks-01-1649339327472.png" alt="Free Kundli"/>
+        <p>Free Kundli</p>
+      </a>
+    </div>
+    <div class="service-card">
+      <a href="kundli_matching.html">
+        <img src="https://w7.pngwing.com/pngs/1004/592/png-transparent-happy-chhath-puja-thumbnail.png" alt="Kundli Matching"/>
+        <p>Kundli Matching</p>
+      </a>
+    </div>
+    <div class="service-card">
+      <a href="horoscope.html">
+        <img src="https://cdn-images.dzcdn.net/images/talk/a56da977fe3dcbdb7b925221f64f9031/0x1900-000000-80-0-0.jpg" alt="Horoscopes"/>
+        <p>Horoscopes</p>
+      </a>
+    </div>
+    <div class="service-card">
+      <a href="numerology.html">
+        <img src="https://cdn-icons-png.flaticon.com/512/3222/3222807.png" alt="Numerology"/>
+        <p>Numerology</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- About Us -->
+  <section class="about-us">
+    <h2>About Us</h2>
+    <p>
+      Welcome to <strong>Soul Sync</strong>, where innovation meets tradition! We're a forward-thinking platform dedicated to empowering individuals through ancient astrology, spiritual science, and cosmic guidance. Our mission is to bridge the gap between modern needs and spiritual wisdom by providing personalized tools and astrological services that bring balance, clarity, and harmony.
+    </p>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div>
+        <h3>Soul Sync</h3>
+        <p>Empowering individuals through ancient spiritual science, kundli, and astrology-based tools designed for the modern world.</p>
+      </div>
+      <div>
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="notes.html">📘 Notes</a></li>
+          <li><a href="projects.html">💡 Projects</a></li>
+          <li><a href="terms.html">📄 Terms & Conditions</a></li>
+          <li><a href="contact.html">📞 Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Connect With Us</h3>
+        <p>✉️ <a href="mailto:99abhinavm@gmail.com">99abhinavm@gmail.com</a></p>
+      </div>
+    </div>
+    <hr />
+    <div class="copyright">
+      &copy; 2025 <strong>Soul Sync</strong>. All rights reserved.
+    </div>
+  </footer>
+
+  <!-- Background Animation Script -->
+  <script>
+    const canvas = document.getElementById("bg-animation");
+    const ctx = canvas.getContext("2d");
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 1;
+        this.vy = (Math.random() - 0.5) * 1;
+        this.size = 2;
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = "white";
+        ctx.fill();
+      }
+    }
+
+    function initParticles() {
+      particles = [];
+      for (let i = 0; i < 100; i++) {
+        particles.push(new Particle());
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+        for (let j = i + 1; j < particles.length; j++) {
+          let dx = particles[i].x - particles[j].x;
+          let dy = particles[i].y - particles[j].y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < 100) {
+            ctx.beginPath();
+            ctx.strokeStyle = "rgba(255,255,255,0.1)";
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(animate);
+    }
+
+    initParticles();
+    animate();
+  </script>
+
+</body>
+</html>

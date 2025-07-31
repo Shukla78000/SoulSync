@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Room</title>
+    <link rel="stylesheet" href="minor2.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f0f0f0;
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 25%;
+            background: #202c33;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #333;
+        }
+
+        .sidebar h2 {
+            margin: 20px;
+        }
+
+        .user-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            overflow-y: auto;
+        }
+
+        .user-list li {
+            padding: 15px 20px;
+            cursor: pointer;
+            border-bottom: 1px solid #333;
+        }
+
+        .user-list li:hover {
+            background: #2a3942;
+        }
+
+        .chat-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            background: #008069;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h2 {
+            margin: 0;
+        }
+
+        .message-box {
+            flex-grow: 1;
+            background: #e5ddd5;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message {
+            margin: 10px 0;
+            padding: 10px 15px;
+            border-radius: 10px;
+            max-width: 60%;
+        }
+
+        .message.sent {
+            background: #d9fdd3;
+            align-self: flex-end;
+        }
+
+        .message.received {
+            background: #fff;
+            align-self: flex-start;
+        }
+
+        .message-input {
+            background: #f0f0f0;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            border-top: 1px solid #ccc;
+        }
+
+        .message-input input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .message-input button {
+            background: #008069;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar with user list -->
+    <div class="sidebar">
+        <h2>Users</h2>
+        <ul class="user-list" id="userList">
+            <li onclick="selectUser('User 1')">User 1</li>
+            <li onclick="selectUser('User 2')">User 2</li>
+            <li onclick="selectUser('User 3')">User 3</li>
+            <li onclick="selectUser('User 4')">User 4</li>
+        </ul>
+    </div>
+
+    <!-- Chat area -->
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2 id="chatWith">Chat Room</h2>
+            <button onclick="logout()">Logout</button>
+        </div>
+        <div class="message-box" id="messageBox">
+            <!-- Messages will appear here -->
+        </div>
+        <div class="message-input">
+            <input type="text" id="message" placeholder="Type a message">
+            <button onclick="sendMessage()">Send</button>
+            <div class="message-input">
+                <!-- Emoji Picker -->
+
+                <!-- Emoji Picker Button -->
+
+                <button id="emoji-btn">😊</button>
+
+
+                <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button/dist/emoji-button.min.js"></script>
+                <script>
+                    const picker = new EmojiButton();
+                    const emojiBtn = document.querySelector('#emoji-btn');
+                    const messageInput = document.querySelector('#message');
+
+                    emojiBtn.addEventListener('click', () => {
+                        picker.togglePicker(emojiBtn);
+                    });
+
+                    picker.on('emoji', emoji => {
+                        messageInput.value += emoji; // Append emoji to input field
+                    });
+                </script>
+
+                <!-- Add a Location Button -->
+
+                <button onclick="sendLocation()">📍</button>
+
+
+
+                <script>
+                    function sendLocation() {
+                        if (navigator.geolocation) {
+                            navigator.geolocation.getCurrentPosition(position => {
+                                const latitude = position.coords.latitude;
+                                const longitude = position.coords.longitude;
+
+                                // Add location link to chat
+                                const messageBox = document.getElementById('messageBox');
+                                const locationMessage = document.createElement('div');
+                                locationMessage.classList.add('message', 'sent');
+                                locationMessage.innerHTML = `
+                    <a href="https://www.google.com/maps?q=${latitude},${longitude}" target="_blank">
+                        📍 My Location
+                    </a>
+                `;
+                                messageBox.appendChild(locationMessage);
+                                messageBox.scrollTop = messageBox.scrollHeight;
+                            });
+                        } else {
+                            alert("Geolocation is not supported by your browser.");
+                        }
+                    }
+                </script>
+
+                <input type="file" id="photoUpload" accept="image/*" style="display: none;">
+                <button onclick="document.getElementById('photoUpload').click()">📷</button>
+
+
+                <script>
+                    const photoUpload = document.getElementById('photoUpload');
+                    photoUpload.addEventListener('change', () => {
+                        const file = photoUpload.files[0];
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = function (event) {
+                                const messageBox = document.getElementById('messageBox');
+                                const imageMessage = document.createElement('div');
+                                imageMessage.classList.add('message', 'sent');
+                                imageMessage.innerHTML = `<img src="${event.target.result}" alt="Image" style="max-width: 200px; border-radius: 5px;">`;
+                                messageBox.appendChild(imageMessage);
+                                messageBox.scrollTop = messageBox.scrollHeight;
+                            };
+                            reader.readAsDataURL(file); // Convert image to base64
+                        }
+                    });
+                </script>
+
+
+                <!-- Message Input -->
+
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        let selectedUser = null;
+
+        // Function to select a user from the sidebar
+        function selectUser(user) {
+            selectedUser = user;
+            document.getElementById('chatWith').textContent = `Chat with ${user}`;
+            document.getElementById('messageBox').innerHTML = ''; // Clear chat box
+        }
+
+        // Function to send a message
+        function sendMessage() {
+            const messageBox = document.getElementById('messageBox');
+            const messageInput = document.getElementById('message');
+            const messageText = messageInput.value.trim();
+
+            if (messageText && selectedUser) {
+                const message = document.createElement('div');
+                message.classList.add('message', 'sent');
+                message.textContent = messageText;
+                messageBox.appendChild(message);
+                messageBox.scrollTop = messageBox.scrollHeight;
+                messageInput.value = '';
+            } else if (!selectedUser) {
+                alert('Please select a user to chat with.');
+            }
+        }
+
+        // Function to handle logout
+        function logout() {
+            window.location.href = 'welcome1.html';
+        }
+    </script>
+</body>
+</html>

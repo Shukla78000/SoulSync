@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with Astrologer</title>
+    <link rel="stylesheet" href="soul_pages.css">
+</head>
+<body>
+    <header class="header">
+        <h1>Chat with Astrologer</h1>
+    </header>
+    <div class="container">
+        <h1>Chat with Astrologer</h1>
+        <p>Connect with expert astrologers and get instant insights into your life.</p>
+        <button class="glow-button">Start Chat</button>
+    </div>
+    
+
+    <section class="chat-section">
+        <div class="chat-box">
+            <p>Welcome to the chat. Ask your astrologer anything!</p>
+            <textarea id="chat-input" placeholder="Type your question..."></textarea>
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </section>
+
+    <script>
+        function sendMessage() {
+            let message = document.getElementById("chat-input").value;
+            alert("Message Sent: " + message);
+        }
+    </script>
+</body>
+</html>

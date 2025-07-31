@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kundli Matching</title>
+    <link rel="stylesheet" href="soul_pages.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #fff;
+            text-align: center;
+        }
+        .container {
+            width: 90%;
+            margin: 20px auto;
+            padding: 20px;
+            background: #1f1f1f;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px #ffb400;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px;
+            font-size: 16px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ffb400;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background: #ffb400;
+            color: black;
+        }
+        .high-compat { color: #4caf50; }
+        .medium-compat { color: #ffb400; }
+        .low-compat { color: #ff5555; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🔮 Kundli Matching</h1>
+    <form id="kundliMatchForm">
+        <h2>Boy's Details</h2>
+        <input type="text" id="boy-name" placeholder="Boy's Name" required>
+        <input type="date" id="boy-birth-date" required>
+        <input type="time" id="boy-birth-time" required>
+        <input type="text" id="boy-place" placeholder="Birth Place" required>
+
+        <h2>Girl's Details</h2>
+        <input type="text" id="girl-name" placeholder="Girl's Name" required>
+        <input type="date" id="girl-birth-date" required>
+        <input type="time" id="girl-birth-time" required>
+        <input type="text" id="girl-place" placeholder="Birth Place" required>
+
+        <button type="submit">Match Kundli</button>
+    </form>
+
+    <div id="matchResult"></div>
+</div>
+
+<script>
+    const predefinedCouples = {
+        "Ramesh Sharma-Sita Verma": {
+            boy: { dob: "1990-08-15", time: "06:45", place: "Delhi", sunSign: "Leo", moonSign: "Aries" },
+            girl: { dob: "1985-03-21", time: "16:30", place: "Mumbai", sunSign: "Aries", moonSign: "Gemini" },
+            gunaMatch: 30,
+            maxGuna: 36,
+            predictions: {
+                "Love Life": "Passionate but needs emotional understanding.",
+                "Marriage Stability": "Strong but occasional conflicts due to ego clashes.",
+                "Future Possibilities": "Very low chance of divorce if mutual respect is maintained.",
+                "Dosha Impact": "Manglik Dosha from Ramesh but balanced by strong Venus in Sita’s chart."
+            }
+        }
+    };
+
+    document.getElementById("kundliMatchForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        const boyName = document.getElementById("boy-name").value.trim();
+        const boyDate = document.getElementById("boy-birth-date").value;
+        const boyTime = document.getElementById("boy-birth-time").value;
+        const boyPlace = document.getElementById("boy-place").value.trim();
+
+        const girlName = document.getElementById("girl-name").value.trim();
+        const girlDate = document.getElementById("girl-birth-date").value;
+        const girlTime = document.getElementById("girl-birth-time").value;
+        const girlPlace = document.getElementById("girl-place").value.trim();
+
+        const coupleKey = `${boyName}-${girlName}`;
+
+        if (predefinedCouples[coupleKey]) {
+            const couple = predefinedCouples[coupleKey];
+
+            if (
+                couple.boy.dob === boyDate &&
+                couple.boy.time === boyTime &&
+                couple.boy.place.toLowerCase() === boyPlace.toLowerCase() &&
+                couple.girl.dob === girlDate &&
+                couple.girl.time === girlTime &&
+                couple.girl.place.toLowerCase() === girlPlace.toLowerCase()
+            ) {
+                let compatibility = (couple.gunaMatch / couple.maxGuna) * 100;
+                let compatibilityClass = compatibility > 75 ? "high-compat" : compatibility > 50 ? "medium-compat" : "low-compat";
+
+                let matchResultHtml = `
+                    <h2>❤️ Kundli Matching for ${boyName} & ${girlName}</h2>
+                    <p><strong>Compatibility Score:</strong> <span class="${compatibilityClass}">${compatibility.toFixed(2)}%</span></p>
+                    <p><strong>Boy:</strong> ${couple.boy.sunSign} (Moon: ${couple.boy.moonSign})</p>
+                    <p><strong>Girl:</strong> ${couple.girl.sunSign} (Moon: ${couple.girl.moonSign})</p>
+
+                    <h3>📜 Match Predictions</h3>
+                    <table>
+                        <tr><th>Aspect</th><th>Prediction</th></tr>
+                        <tr><td>Love Life</td><td>${couple.predictions["Love Life"]}</td></tr>
+                        <tr><td>Marriage Stability</td><td>${couple.predictions["Marriage Stability"]}</td></tr>
+                        <tr><td>Future Possibilities</td><td>${couple.predictions["Future Possibilities"]}</td></tr>
+                        <tr><td>Dosha Impact</td><td>${couple.predictions["Dosha Impact"]}</td></tr>
+                    </table>
+                `;
+
+                document.getElementById("matchResult").innerHTML = matchResultHtml;
+            } else {
+                document.getElementById("matchResult").innerHTML = "<p class='low-compat'>⚠️ No match found in predefined data. Please enter correct details.</p>";
+            }
+        } else {
+            document.getElementById("matchResult").innerHTML = "<p class='low-compat'>⚠️ No match found. Try with predefined names.</p>";
+        }
+    });
+</script>
+
+</body>
+</html>

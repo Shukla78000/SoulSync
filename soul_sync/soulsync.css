@@ -1,0 +1,106 @@
+/* Reset and full-page styling */
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: black;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Set the exact nebula background */
+body {
+    background: url('https://stsci-opo.org/STScI-01EVVDE4Z6YJ2FSAAG21CDRWYC.jpg') no-repeat center center/cover;
+}
+
+/* Twinkling Stars Effect */
+.stars {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0;
+    animation: twinkle 2s infinite alternate ease-in-out;
+}
+
+/* Twinkling animation */
+@keyframes twinkle {
+    0% { opacity: 0; transform: scale(0.5); }
+    50% { opacity: 1; transform: scale(1.2); }
+    100% { opacity: 0; transform: scale(0.8); }
+}
+
+/* Main container with glass effect */
+.container {
+    position: relative;
+    padding: 20px;
+    z-index: 1;
+    max-width: 600px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+}
+
+/* Logo */
+.logo {
+    width: 150px;
+    margin-top: 20px;
+    border-radius: 50%;
+}
+
+/* App Title */
+.app-title {
+    font-size: 2.5em;
+    font-weight: bold;
+    text-shadow: 0 0 20px #ff00ff;
+}
+
+/* Buttons */
+.auth-buttons, .info-buttons {
+    margin-top: 20px;
+}
+
+button {
+    background: linear-gradient(45deg, #ff00ff, #6200ea);
+    border: none;
+    color: white;
+    padding: 12px 25px;
+    margin: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0px 0px 15px #ff00ff;
+}
+
+button:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 0px 25px #ff00ff;
+}
+
+/* Footer */
+footer {
+    margin-top: 20px;
+    font-size: 14px;
+    opacity: 0.7;
+}
+

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Kundli</title>
+    <link rel="stylesheet" href="soul_pages.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #fff;
+            text-align: center;
+        }
+        .container {
+            width: 90%;
+            margin: 20px auto;
+            padding: 20px;
+            background: #1f1f1f;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px #ffb400;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px;
+            font-size: 16px;
+        }
+        .kundli-matrix {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            padding: 10px;
+            background: #222;
+        }
+        .kundli-box {
+            border: 1px solid #888;
+            padding: 10px;
+            font-size: 14px;
+            background: #444;
+        }
+        .problems {
+            color: #ff5555;
+        }
+        .solutions {
+            color: #4caf50;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ffb400;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background: #ffb400;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🔮 Enter Details to Generate Kundli</h1>
+    <form id="kundliForm">
+        <input type="text" id="name" placeholder="Enter Your Name" required>
+        <input type="date" id="date" required>
+        <input type="time" id="time" required>
+        <input type="text" id="place" placeholder="Birth Place" required>
+        <button type="submit">Generate Kundli</button>
+    </form>
+
+    <div id="kundliResult"></div>
+</div>
+
+<script>
+    const predefinedKundlis = {
+        "Ramesh Sharma": {
+            dob: "1990-08-15",
+            time: "06:45",
+            place: "Delhi",
+            sunSign: "Leo",
+            moonSign: "Aries",
+            kundliMatrix: ["☀ Sun: Leo", "🌙 Moon: Aries", "🪐 Saturn: Scorpio", "🔥 Mars: Virgo", "💨 Mercury: Gemini", "💧 Venus: Libra", "🌍 Jupiter: Taurus", "🌊 Rahu: Aquarius", "⚡ Ketu: Sagittarius"],
+            lifeDetails: {
+                "Career": "Successful in Business, Leadership Roles.",
+                "Love Life": "Passionate but needs emotional balance.",
+                "Health": "Strong immunity but prone to heart issues.",
+                "Wealth": "Financially stable, gains from real estate.",
+                "Marriage": "Possible marriage delays but strong love life.",
+                "Doshas": ["Manglik Dosha", "Kaal Sarp Dosha"]
+            },
+            problems: [
+                "Struggles in career before 30 years.",
+                "Prone to financial ups and downs.",
+                "Emotional imbalance in relationships."
+            ],
+            solutions: [
+                "Wear a Ruby stone for better Sun alignment.",
+                "Chant 'Om Namah Shivaya' 108 times daily.",
+                "Offer water to the Sun every morning."
+            ]
+        },
+        "Sita Verma": {
+            dob: "1985-03-21",
+            time: "16:30",
+            place: "Mumbai",
+            sunSign: "Aries",
+            moonSign: "Gemini",
+            kundliMatrix: ["☀ Sun: Aries", "🌙 Moon: Gemini", "🪐 Saturn: Capricorn", "🔥 Mars: Taurus", "💨 Mercury: Leo", "💧 Venus: Pisces", "🌍 Jupiter: Sagittarius", "🌊 Rahu: Cancer", "⚡ Ketu: Aquarius"],
+            lifeDetails: {
+                "Career": "Great in creative fields like Arts & Writing.",
+                "Love Life": "Highly romantic but needs stability.",
+                "Health": "Strong but must avoid stress.",
+                "Wealth": "Sudden gains in life, lucky in investments.",
+                "Marriage": "Loving but requires patience in relationships.",
+                "Doshas": ["Shani Dosha"]
+            },
+            problems: [
+                "Frequent health issues due to stress.",
+                "Delays in job promotions.",
+                "Difficulty in making long-term commitments."
+            ],
+            solutions: [
+                "Light a mustard oil diya under a Peepal tree on Saturdays.",
+                "Wear a Blue Sapphire for better Saturn effects.",
+                "Donate black sesame seeds on Saturdays."
+            ]
+        }
+    };
+
+    document.getElementById("kundliForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        const name = document.getElementById("name").value.trim();
+        const date = document.getElementById("date").value;
+        const time = document.getElementById("time").value;
+        const place = document.getElementById("place").value.trim();
+
+        if (predefinedKundlis[name]) {
+            const kundli = predefinedKundlis[name];
+
+            if (kundli.dob === date && kundli.time === time && kundli.place.toLowerCase() === place.toLowerCase()) {
+                let kundliMatrixHtml = "<h3>🪐 Kundli Matrix</h3><div class='kundli-matrix'>";
+                kundli.kundliMatrix.forEach(planet => {
+                    kundliMatrixHtml += `<div class='kundli-box'>${planet}</div>`;
+                });
+                kundliMatrixHtml += "</div>";
+
+                let lifeDetailsHtml = "<h3>📜 Life Predictions</h3><table><tr><th>Aspect</th><th>Prediction</th></tr>";
+                for (const [aspect, prediction] of Object.entries(kundli.lifeDetails)) {
+                    lifeDetailsHtml += `<tr><td>${aspect}</td><td>${prediction}</td></tr>`;
+                }
+                lifeDetailsHtml += "</table>";
+
+                let problemsHtml = "<h3 class='problems'>⚠️ Life Problems</h3><ul>";
+                kundli.problems.forEach(problem => {
+                    problemsHtml += `<li>${problem}</li>`;
+                });
+                problemsHtml += "</ul>";
+
+                let solutionsHtml = "<h3 class='solutions'>✅ Remedies & Solutions</h3><ul>";
+                kundli.solutions.forEach(solution => {
+                    solutionsHtml += `<li>${solution}</li>`;
+                });
+                solutionsHtml += "</ul>";
+
+                document.getElementById("kundliResult").innerHTML = `
+                    <h2>🔮 Kundli for ${name}</h2>
+                    <p><strong>DOB:</strong> ${kundli.dob} | <strong>Time:</strong> ${kundli.time} | <strong>Place:</strong> ${kundli.place}</p>
+                    <p><strong>Sun Sign:</strong> ${kundli.sunSign} | <strong>Moon Sign:</strong> ${kundli.moonSign}</p>
+                    ${kundliMatrixHtml}
+                    ${lifeDetailsHtml}
+                    ${problemsHtml}
+                    ${solutionsHtml}
+                `;
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
